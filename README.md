@@ -7,7 +7,7 @@ These are docker images for [MongoDB](https://www.mongodb.com) database running 
 
 ## Versions
 
-* [latest](https://github.com/dockhippie/mongodb/tree/master) available as ```webhippie/mongodb:latest``` at [Docker Hub](https://registry.hub.docker.com/u/webhippie/mongodb/)
+To get an overview about the available versions please take a look at the [GitHub branches](https://github.com/dockhippie/mongodb/branches/all) or our [Docker Hub tags](https://hub.docker.com/r/webhippie/mongodb/tags/), these lists are always up to date.
 
 
 ## Volumes
@@ -19,6 +19,8 @@ These are docker images for [MongoDB](https://www.mongodb.com) database running 
 ## Ports
 
 * 27017
+* 27018
+* 27019
 
 
 ## Available environment variables
@@ -96,9 +98,7 @@ ENV MONGODB_WIRED_TIGER_INDEX_PREFIX_COMPRESSION
 
 ## Inherited environment variables
 
-```bash
-ENV CRON_ENABLED true
-```
+* [webhippie/alpine](https://github.com/dockhippie/alpine#available-environment-variables)
 
 
 ## Contributing
