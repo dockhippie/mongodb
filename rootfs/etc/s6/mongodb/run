@@ -73,7 +73,7 @@ ${STARTCMD} --upgrade
 
 if [[ -n "${MONGODB_AUTH}" ]]
 then
-  ${STARTCMD} --fork --logpath /dev/stdout
+  ${STARTCMD} --fork --logpath /dev/stdout --bind_ip 127.0.0.1
   wait-for-it localhost:27017
 
   if [[ -n "${MONGODB_ROOT_USERNAME}" && -n "${MONGODB_ROOT_PASSWORD}" ]]
