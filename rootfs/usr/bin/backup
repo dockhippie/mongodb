@@ -1,0 +1,82 @@
+#!/bin/bash
+set -eo pipefail
+
+ARGS=(
+  --quiet
+)
+
+if [[ -n "${MONGODB_AUTH}" ]]
+then
+  if [[ -n "${MONGODB_ROOT_USERNAME}" ]]
+  then
+    ARGS+=(
+      --username ${MONGODB_ROOT_USERNAME}
+    )
+  fi
+
+  if [[ -n "${MONGODB_ROOT_PASSWORD}" ]]
+  then
+    ARGS+=(
+      --password ${MONGODB_ROOT_PASSWORD}
+    )
+  fi
+
+  ARGS+=(
+    --authenticationDatabase ${MONGODB_AUTH_DB:-admin}
+  )
+fi
+
+DATABASES=$(mongo ${ARGS[@]} --eval 'db.adminCommand( { listDatabases: 1, nameOnly: true } )' | jq -r .databases[].name | grep -v -E "(admin|local)")
+MAXIMUM=14
+
+if [ "${DATABASES}" == "" ]
+then
+  exit
+fi
+
+if [ ! -d /var/lib/backup ]
+then
+  mkdir -p /var/lib/backup
+  chmod 740 /var/lib/backup
+fi
+
+cd /tmp
+
+for DATABASE in ${DATABASES}
+do
+  if [ -f /tmp/mongodb-${DATABASE}.archive ]
+  then
+    rm -f /tmp/mongodb-${DATABASE}.archive
+  fi
+
+  mongodump ${ARGS[@]} --db=${DATABASE} --archive > /tmp/mongodb-${DATABASE}.archive
+done
+
+for (( COUNTER=$MAXIMUM; COUNTER>=1; COUNTER-- ))
+do
+  if [ -d /var/lib/backup/backup.${COUNTER} ]
+  then
+    DEST=`expr $COUNTER + 1`
+
+    if [ $DEST -le $MAXIMUM ]
+    then
+      rm -rf /var/lib/backup/backup.${DEST}
+      mv /var/lib/backup/backup.${COUNTER} /var/lib/backup/backup.${DEST}
+    fi
+  fi
+done
+
+mkdir -p /var/lib/backup/backup.1
+chmod 740 /var/lib/backup/backup.1
+
+cd /var/lib/backup/backup.1
+
+for DATABASE in ${DATABASES}
+do
+  if [ -f /tmp/mongodb-${DATABASE}.archive ]
+  then
+    mv /tmp/mongodb-${DATABASE}.archive ${DATABASE}.archive
+    gzip ${DATABASE}.archive
+    chmod 640 ${DATABASE}.archive.gz
+  fi
+done
