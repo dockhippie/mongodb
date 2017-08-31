@@ -40,16 +40,14 @@ then
   chmod 740 /var/lib/backup
 fi
 
-cd /tmp
-
 for DATABASE in ${DATABASES}
 do
-  if [ -f /tmp/mongodb-${DATABASE}.archive ]
+  if [ -d /tmp/${DATABASE} ]
   then
-    rm -f /tmp/mongodb-${DATABASE}.archive
+    rm -rf /tmp/${DATABASE}
   fi
 
-  mongodump ${ARGS[@]} --db=${DATABASE} --archive > /tmp/mongodb-${DATABASE}.archive
+  mongodump ${ARGS[@]} --db=${DATABASE} --out /tmp
 done
 
 for (( COUNTER=$MAXIMUM; COUNTER>=1; COUNTER-- ))
@@ -73,10 +71,10 @@ cd /var/lib/backup/backup.1
 
 for DATABASE in ${DATABASES}
 do
-  if [ -f /tmp/mongodb-${DATABASE}.archive ]
+  if [ -d /tmp/${DATABASE} ]
   then
-    mv /tmp/mongodb-${DATABASE}.archive ${DATABASE}.archive
-    gzip ${DATABASE}.archive
-    chmod 640 ${DATABASE}.archive.gz
+    tar czf ${DATABASE}.tgz -C /tmp/ ${DATABASE}
+    chmod 640 ${DATABASE}.tgz
+    rm -rf /tmp/${DATABASE}
   fi
 done
