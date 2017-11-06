@@ -71,7 +71,7 @@ STARTCMD="su-exec mongodb /usr/bin/mongod --nounixsocket"
 [[ "${MONGODB_PERFORM_REPAIR}" == "true" || "${MONGODB_PERFORM_REPAIR}" == "1" ]] && ${STARTCMD} --repair
 [[ "${MONGODB_PERFORM_UPGRADE}" == "true" || "${MONGODB_PERFORM_UPGRADE}" == "1" ]] && ${STARTCMD} --upgrade
 
-if [[ -n "${MONGODB_AUTH}" ]]
+if [[ "${MONGODB_AUTH}" == "true" || "${MONGODB_AUTH}" == "1" ]]
 then
   ${STARTCMD} --fork --logpath /dev/stdout --bind_ip 127.0.0.1
   wait-for-it localhost:27017
