@@ -1,6 +1,12 @@
 #!/bin/bash
 set -eo pipefail
 
+declare -x MONGODB_PERFORM_REPAIR
+[[ -z "${MONGODB_PERFORM_REPAIR}" ]] && MONGODB_PERFORM_REPAIR="false"
+
+declare -x MONGODB_PERFORM_UPGRADE
+[[ -z "${MONGODB_PERFORM_UPGRADE}" ]] && MONGODB_PERFORM_UPGRADE="true"
+
 declare -x MONGODB_ROOT_USERNAME
 [[ -z "${MONGODB_ROOT_USERNAME}" ]] && MONGODB_ROOT_USERNAME=""
 

@@ -68,8 +68,8 @@ STARTCMD="su-exec mongodb /usr/bin/mongod --nounixsocket"
 [[ -n "${MONGODB_WIRED_TIGER_COLLECTION_BLOCK_COMPRESSOR}" ]] && STARTCMD="${STARTCMD} --wiredTigerCollectionBlockCompressor ${MONGODB_WIRED_TIGER_COLLECTION_BLOCK_COMPRESSOR}"
 [[ -n "${MONGODB_WIRED_TIGER_INDEX_PREFIX_COMPRESSION}" ]] && STARTCMD="${STARTCMD} --wiredTigerIndexPrefixCompression ${MONGODB_WIRED_TIGER_INDEX_PREFIX_COMPRESSION}"
 
-${STARTCMD} --repair
-${STARTCMD} --upgrade
+[[ "${MONGODB_PERFORM_REPAIR}" == "true" || "${MONGODB_PERFORM_REPAIR}" == "1" ]] && ${STARTCMD} --repair
+[[ "${MONGODB_PERFORM_UPGRADE}" == "true" || "${MONGODB_PERFORM_UPGRADE}" == "1" ]] && ${STARTCMD} --upgrade
 
 if [[ -n "${MONGODB_AUTH}" ]]
 then
@@ -104,4 +104,4 @@ fi
 [[ "${MONGODB_NOAUTH}" == "true" || "${MONGODB_NOAUTH}" == "1" ]] && STARTCMD="${STARTCMD} --noauth"
 [[ "${MONGODB_AUTH}" == "true" || "${MONGODB_AUTH}" == "1" ]] && STARTCMD="${STARTCMD} --auth"
 
-exec ${STARTCMD}
+exec ${STARTCMD} --bind_ip 0.0.0.0
