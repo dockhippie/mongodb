@@ -1,0 +1,8 @@
+#!/bin/bash
+source /usr/bin/entrypoint
+
+if [[ "${MONGODB_SKIP_CHOWN}" != "true" ]]
+then
+  echo "> chown data directory"
+  find /var/lib/mongodb \( \! -user mongodb -o \! -group mongodb \) -print0 | xargs -0 -r chown mongodb:mongodb
+fi
