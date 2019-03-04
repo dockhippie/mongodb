@@ -1,7 +1,7 @@
 {
   "dockerfile": {
     "fileMatch": [
-      ".*/Dockerfile\\.(amd64|arm32v6|arm64v8)"
+      ".*/Dockerfile\\.(amd64|arm32v7|arm64v8)"
     ],
     "pinDigests": true
   },
