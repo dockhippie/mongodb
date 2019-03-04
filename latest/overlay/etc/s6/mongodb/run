@@ -1,12 +1,24 @@
 #!/bin/bash
-set -eo pipefail
 
 if [ -f ./setup ]
 then
   source ./setup
 fi
 
-STARTCMD="su-exec mongodb /usr/bin/mongod --nounixsocket"
+if [ -f ./custom ]
+then
+  source ./custom
+fi
+
+if [ -d ./custom.d ]
+then
+  for FILE in $(find ./custom.d -type f -iname *.sh | sort)
+  do
+    source ${FILE}
+  done
+fi
+
+STARTCMD="su-exec mongodb mongod --nounixsocket"
 
 [[ -n "${MONGODB_CONFIG}" ]] && STARTCMD="${STARTCMD} --config ${MONGODB_CONFIG}"
 [[ "${MONGODB_VERBOSE}" == "true" || "${MONGODB_VERBOSE}" == "1" ]] && STARTCMD="${STARTCMD} --verbose"
@@ -73,6 +85,7 @@ STARTCMD="su-exec mongodb /usr/bin/mongod --nounixsocket"
 
 if [[ "${MONGODB_AUTH}" == "true" || "${MONGODB_AUTH}" == "1" ]]
 then
+  echo "> start local service"
   ${STARTCMD} --fork --logpath /dev/stdout --bind_ip 127.0.0.1
   wait-for-it localhost:27017
 
@@ -80,8 +93,10 @@ then
   then
     if [[ "$(mongo --quiet --eval "print(db.system.users.find({user:'${MONGODB_ROOT_USERNAME}'}).count())" ${MONGODB_AUTH_DB})" == "0" ]]
     then
+      echo "> create root user"
       mongo --quiet --eval "db.createUser({user: '${MONGODB_ROOT_USERNAME}', pwd: '${MONGODB_ROOT_PASSWORD}', roles: ['readWriteAnyDatabase','dbAdminAnyDatabase','userAdminAnyDatabase','clusterAdmin']})" ${MONGODB_AUTH_DB}
     else
+      echo "> update root user"
       mongo --quiet --eval "db.changeUserPassword('${MONGODB_ROOT_USERNAME}', '${MONGODB_ROOT_PASSWORD}')" ${MONGODB_AUTH_DB}
     fi
   fi
@@ -92,16 +107,20 @@ then
 
     if [[ "$(mongo --quiet --eval "print(db.system.users.find({user:'${MONGODB_USERNAME}'}).count())" ${MONGODB_AUTH_DB})" == "0" ]]
     then
+      echo "> create additional user"
       mongo --quiet --eval "db.createUser({user: '${MONGODB_USERNAME}', pwd: '${MONGODB_PASSWORD}', roles: [{role: 'readWrite', db: '${MONGODB_DATABASE}'}]})" ${MONGODB_AUTH_DB}
     else
+      echo "> update additional user"
       mongo --quiet --eval "db.changeUserPassword('${MONGODB_USERNAME}', '${MONGODB_PASSWORD}')" ${MONGODB_AUTH_DB}
     fi
   fi
 
+  echo "> stop local service"
   ${STARTCMD} --shutdown
 fi
 
 [[ "${MONGODB_NOAUTH}" == "true" || "${MONGODB_NOAUTH}" == "1" ]] && STARTCMD="${STARTCMD} --noauth"
 [[ "${MONGODB_AUTH}" == "true" || "${MONGODB_AUTH}" == "1" ]] && STARTCMD="${STARTCMD} --auth"
 
+echo "> starting mongodb service"
 exec ${STARTCMD} --bind_ip 0.0.0.0

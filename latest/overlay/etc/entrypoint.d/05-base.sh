@@ -1,5 +1,4 @@
-#!/bin/bash
-set -eo pipefail
+#!/usr/bin/env bash
 
 declare -x MONGODB_PERFORM_REPAIR
 [[ -z "${MONGODB_PERFORM_REPAIR}" ]] && MONGODB_PERFORM_REPAIR="false"
@@ -208,5 +207,6 @@ declare -x MONGODB_WIRED_TIGER_COLLECTION_BLOCK_COMPRESSOR
 declare -x MONGODB_WIRED_TIGER_INDEX_PREFIX_COMPRESSION
 [[ -z "${MONGODB_WIRED_TIGER_INDEX_PREFIX_COMPRESSION}" ]] && MONGODB_WIRED_TIGER_INDEX_PREFIX_COMPRESSION=""
 
-chown -R mongodb:mongodb \
-  /var/lib/mongodb
+declare -x MONGODB_SKIP_CHOWN
+[[ -z "${MONGODB_SKIP_CHOWN}" ]] && MONGODB_SKIP_CHOWN="false"
+

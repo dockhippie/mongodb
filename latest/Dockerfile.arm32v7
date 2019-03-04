@@ -1,0 +1,28 @@
+FROM webhippie/ubuntu:16.04-arm32v7
+
+LABEL maintainer="Thomas Boerger <thomas@webhippie.de>" \
+  org.label-schema.name="MongoDB" \
+  org.label-schema.vcs-url="https://github.com/dockhippie/mongodb.git" \
+  org.label-schema.vendor="Thomas Boerger" \
+  org.label-schema.schema-version="1.0"
+
+EXPOSE 27017 27018 27019
+
+VOLUME ["/var/lib/mongodb", "/var/lib/backup"]
+WORKDIR /root
+ENTRYPOINT ["/usr/bin/entrypoint"]
+CMD ["/bin/s6-svscan", "/etc/s6"]
+
+ENV CRON_ENABLED true
+
+RUN apt-get update && \
+  apt-get upgrade -y && \
+  mkdir -p /var/lib/mongodb && \
+  groupadd -g 1000 mongodb && \
+  useradd -u 1000 -d /var/lib/mongodb -g mongodb -s /bin/bash -m mongodb && \
+  apt-get install -y mongodb mongodb-clients jq && \
+  apt-get autoremove -y && \
+  apt-get clean -y && \
+  rm -rf /var/lib/apt/lists/* /var/lib/mongodb/*
+
+COPY ./overlay ./overlay-arm32v7 /

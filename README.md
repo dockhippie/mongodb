@@ -1,5 +1,6 @@
 # MongoDB
 
+[![Build Status](https://cloud.drone.io/api/badges/dockhippie/mongodb/status.svg)](https://cloud.drone.io/dockhippie/mongodb)
 [![](https://images.microbadger.com/badges/image/webhippie/mongodb.svg)](https://microbadger.com/images/webhippie/mongodb "Get your own image badge on microbadger.com")
 
 These are docker images for [MongoDB](https://www.mongodb.com) database running on an [Alpine Linux container](https://registry.hub.docker.com/u/webhippie/alpine/).
@@ -7,7 +8,7 @@ These are docker images for [MongoDB](https://www.mongodb.com) database running 
 
 ## Versions
 
-To get an overview about the available versions please take a look at the [GitHub branches](https://github.com/dockhippie/mongodb/branches/all) or our [Docker Hub tags](https://hub.docker.com/r/webhippie/mongodb/tags/), these lists are always up to date.
+* [latest](./latest) available as `webhippie/mongodb:latest`
 
 
 ## Volumes
@@ -121,5 +122,5 @@ MIT
 ## Copyright
 
 ```
-Copyright (c) 2015-2017 Thomas Boerger <http://www.webhippie.de>
+Copyright (c) 2015 Thomas Boerger <http://www.webhippie.de>
 ```
