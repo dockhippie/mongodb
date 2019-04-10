@@ -2,7 +2,7 @@ FROM webhippie/ubuntu:16.04-arm64v8
 
 LABEL maintainer="Thomas Boerger <thomas@webhippie.de>" \
   org.label-schema.name="MongoDB" \
-  org.label-schema.vcs-url="https://github.com/dockhippie/mongodb.git" \
+  org.label-schema.version="latest" \
   org.label-schema.vendor="Thomas Boerger" \
   org.label-schema.schema-version="1.0"
 
