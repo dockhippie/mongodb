@@ -1,4 +1,4 @@
-FROM webhippie/ubuntu:16.04-arm64v8@sha256:f7fb62598aedac1aaec84ff1f25ee2d1b565106e8f22c7e7460ac9084f406f58
+FROM webhippie/ubuntu:16.04-arm64v8
 
 LABEL maintainer="Thomas Boerger <thomas@webhippie.de>" \
   org.label-schema.name="MongoDB" \
