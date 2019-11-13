@@ -1,4 +1,4 @@
-FROM webhippie/ubuntu:18.04
+FROM webhippie/ubuntu:18.04-amd64
 
 LABEL maintainer="Thomas Boerger <thomas@webhippie.de>" \
   org.label-schema.name="MongoDB" \
