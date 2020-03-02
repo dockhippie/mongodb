@@ -26,7 +26,7 @@ then
   )
 fi
 
-DATABASES=$(mongo ${ARGS[@]} --eval 'db.adminCommand( { listDatabases: 1, nameOnly: true } )' | jq -r .databases[].name | grep -v -E "(admin|local)")
+DATABASES=$(mongo ${ARGS[@]} --eval 'JSON.stringify(db.adminCommand( { listDatabases: 1, nameOnly: true } ))' | jq -r .databases[].name | grep -v -E "(admin|local)")
 MAXIMUM=14
 
 if [ "${DATABASES}" == "" ]
