@@ -19,23 +19,23 @@ jobs:
           - folder: v5.0
             tag: 5.0
             arm64: true
-            arm: true
+            arm: false
           - folder: v4.4
             tag: 4.4
             arm64: true
-            arm: true
+            arm: false
           - folder: v4.2
             tag: 4.2
             arm64: true
-            arm: true
+            arm: false
           - folder: v4.0
             tag: 4.0
-            arm64: true
-            arm: true
+            arm64: false
+            arm: false
           - folder: latest
             tag: latest
             arm64: true
-            arm: true
+            arm: false
 
     steps:
       - name: Checkout source
