@@ -1,4 +1,4 @@
-FROM webhippie/ubuntu:18.04-amd64@sha256:dbf7d9ce1b50ee8bada7771bc7f6ac434d849e59f92d4c2ff9db3baf84af5390
+FROM webhippie/ubuntu:18.04-amd64@sha256:095cfc975c0a5987885cc8da583ab09445a048c2cf261f9c1b426012fc0f3f76
 
 VOLUME ["/var/lib/mongodb", "/var/lib/backup"]
 EXPOSE 27017 27018 27019
