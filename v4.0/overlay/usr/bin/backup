@@ -6,7 +6,8 @@ ARGS=(
     --quiet
 )
 
-if [[ -n "${MONGODB_AUTH}" ]]; then
+# Script was sending back an error because of the test below: now fixed
+if [[ "${MONGODB_AUTH}" == "true" || "${MONGODB_AUTH}" == "1" ]]; then
     if [[ -n "${MONGODB_ROOT_USERNAME}" ]]; then
         ARGS+=(
             --username ${MONGODB_ROOT_USERNAME}
@@ -20,7 +21,8 @@ if [[ -n "${MONGODB_AUTH}" ]]; then
     fi
 
     ARGS+=(
-        --authenticationDatabase ${MONGODB_AUTH_DB:-admin}
+        # Authentication database for root user have been set to admin because of its roles
+        --authenticationDatabase admin
     )
 fi
 
