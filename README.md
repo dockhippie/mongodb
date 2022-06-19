@@ -1,6 +1,6 @@
 # mongodb
 
-[![Docker Build](https://github.com/dockhippie/mongodb/workflows/docker/badge.svg)](https://github.com/dockhippie/mongodb/actions?query=workflow%3Adocker) [![Readme Build](https://github.com/dockhippie/mongodb/workflows/readme/badge.svg)](https://github.com/dockhippie/mongodb/actions?query=workflow%3Areadme) [![Docker Size](https://img.shields.io/docker/image-size/webhippie/mongodb/latest)](#) [![Docker Pulls](https://img.shields.io/docker/pulls/webhippie/mongodb)](https://hub.docker.com/r/webhippie/mongodb) [![GitHub Repo](https://img.shields.io/badge/github-repo-yellowgreen)](https://github.com/dockhippie/mongodb)
+[![Docker Build](https://github.com/dockhippie/mongodb/workflows/docker/badge.svg)](https://github.com/dockhippie/mongodb/actions?query=workflow%3Adocker) [![Readme Build](https://github.com/dockhippie/mongodb/workflows/readme/badge.svg)](https://github.com/dockhippie/mongodb/actions?query=workflow%3Areadme) [![Docker Size](https://img.shields.io/docker/image-size/webhippie/mongodb/latest)](https://github.com/dockhippie/mongodb) [![Docker Pulls](https://img.shields.io/docker/pulls/webhippie/mongodb)](https://hub.docker.com/r/webhippie/mongodb) [![GitHub Repo](https://img.shields.io/badge/github-repo-yellowgreen)](https://github.com/dockhippie/mongodb)
 
 These are docker images for [MongoDB](https://www.mongodb.com) running on our [Ubuntu image](https://github.com/dockhippie/ubuntu).
 
@@ -45,6 +45,7 @@ MONGODB_JOURNAL_COMMIT_INTERVAL =
 MONGODB_JOURNAL_OPTIONS =
 MONGODB_KEY_FILE =
 MONGODB_LISTEN_BACKLOG =
+MONGODB_LOGPATH =
 MONGODB_MAX_CONNS =
 MONGODB_NETWORK_MESSAGE_COMPRESSORS =
 MONGODB_NO_INDEX_BUILD_RETRY = false
@@ -94,6 +95,7 @@ MONGODB_SSL_WEAK_CERTIFICATE_VALIDATION =
 MONGODB_STORAGE_ENGINE =
 MONGODB_SYNCDELAY =
 MONGODB_SYSINFO = false
+MONGODB_SYSLOG = false
 MONGODB_TIMESTAMP_FORMAT =
 MONGODB_TIMEZONE_INFO =
 MONGODB_TRANSITION_TO_AUTH = false
@@ -110,7 +112,7 @@ MONGODB_ZSTD_DEFAULT_COMPRESSION_LEVEL =
 
 ## Inherited environment variables
 
-*  [webhippie/ubuntu](https://github.com/dockhippie/ubuntu#available-environment-variables)
+* [webhippie/ubuntu](https://github.com/dockhippie/ubuntu#available-environment-variables)
 
 ## Contributing
 
@@ -118,7 +120,7 @@ Fork -> Patch -> Push -> Pull Request
 
 ## Authors
 
-*  [Thomas Boerger](https://github.com/tboerger)
+* [Thomas Boerger](https://github.com/tboerger)
 
 ## License
 
