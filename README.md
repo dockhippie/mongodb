@@ -48,6 +48,7 @@ MONGODB_JOURNAL_COMMIT_INTERVAL =
 MONGODB_JOURNAL_OPTIONS =
 MONGODB_KEY_FILE =
 MONGODB_LISTEN_BACKLOG =
+MONGODB_LOGPATH =
 MONGODB_MAX_CONNS =
 MONGODB_NETWORK_MESSAGE_COMPRESSORS =
 MONGODB_NO_INDEX_BUILD_RETRY = false
@@ -97,6 +98,7 @@ MONGODB_SSL_WEAK_CERTIFICATE_VALIDATION =
 MONGODB_STORAGE_ENGINE =
 MONGODB_SYNCDELAY =
 MONGODB_SYSINFO = false
+MONGODB_SYSLOG = false
 MONGODB_TIMESTAMP_FORMAT =
 MONGODB_TIMEZONE_INFO =
 MONGODB_TRANSITION_TO_AUTH = false
@@ -113,7 +115,7 @@ MONGODB_ZSTD_DEFAULT_COMPRESSION_LEVEL =
 
 ## Inherited environment variables
 
-*  [webhippie/ubuntu](https://github.com/dockhippie/ubuntu#available-environment-variables)
+* [webhippie/ubuntu](https://github.com/dockhippie/ubuntu#available-environment-variables)
 
 ## Contributing
 
@@ -121,7 +123,7 @@ Fork -> Patch -> Push -> Pull Request
 
 ## Authors
 
-*  [Thomas Boerger](https://github.com/tboerger)
+* [Thomas Boerger](https://github.com/tboerger)
 
 ## License
 
