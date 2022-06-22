@@ -6,7 +6,7 @@ ARGS=(
     --quiet
 )
 
-if [[ -n "${MONGODB_AUTH}" ]]; then
+if [[ "${MONGODB_AUTH}" == "true" || "${MONGODB_AUTH}" == "1" ]]; then
     if [[ -n "${MONGODB_ROOT_USERNAME}" ]]; then
         ARGS+=(
             --username ${MONGODB_ROOT_USERNAME}
