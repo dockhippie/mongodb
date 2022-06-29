@@ -91,7 +91,6 @@ pushd ${MONGODB_DBPATH} >/dev/null
     if [[ "${MONGODB_AUTH}" == "true" || "${MONGODB_AUTH}" == "1" ]]; then
         echo "> start local service"
         ${STARTCMD} --fork --logpath ${MONGODB_LOGPATH:-$MONGODB_DBPATH/mongod.log} --logappend --bind_ip 127.0.0.1
-        # No netcat needed: mongod already waits by itself to be started and listening
 
         if [[ -n "${MONGODB_ROOT_USERNAME}" && -n "${MONGODB_ROOT_PASSWORD}" ]]; then
             # In this section, $MONGODB_AUTH_DB is not used to set up the admin user as the roles require to be assigned to a user from "admin" db
