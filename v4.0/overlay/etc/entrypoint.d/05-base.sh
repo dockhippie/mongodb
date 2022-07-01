@@ -225,4 +225,16 @@ declare -x MONGODB_AUTH
 declare -x MONGODB_SKIP_CHOWN
 [[ -z "${MONGODB_SKIP_CHOWN}" ]] && MONGODB_SKIP_CHOWN="false"
 
+declare -x MONGODB_LOGPATH
+[[ -z "${MONGODB_LOGPATH}" ]] && MONGODB_LOGPATH=""
+
+declare -x MONGODB_LOGAPPEND
+[[ -z "${MONGODB_LOGAPPEND}" ]] && MONGODB_LOGAPPEND="false"
+
+declare -x MONGODB_LOGROTATE
+[[ -z "${MONGODB_LOGROTATE}" ]] && MONGODB_LOGROTATE=""
+
+declare -x MONGODB_SYSLOG
+[[ -z "${MONGODB_SYSLOG}" ]] && MONGODB_SYSLOG="false"
+
 true

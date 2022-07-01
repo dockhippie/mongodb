@@ -23,6 +23,7 @@ pushd ${MONGODB_DBPATH} >/dev/null
     [[ "${MONGODB_TRANSITION_TO_AUTH}" == "true" || "${MONGODB_TRANSITION_TO_AUTH}" == "1" ]] && STARTCMD="${STARTCMD} --transitionToAuth"
     [[ -n "${MONGODB_SLOWMS}" ]] && STARTCMD="${STARTCMD} --slowms ${MONGODB_SLOWMS}"
     [[ -n "${MONGODB_SLOW_OP_SAMPLE_RATE}" ]] && STARTCMD="${STARTCMD} --slowOpSampleRate ${MONGODB_SLOW_OP_SAMPLE_RATE}"
+    [[ -n "${MONGODB_PROFILE_FILTER}" ]] && STARTCMD="${STARTCMD} --profileFilter ${MONGODB_PROFILE_FILTER}"
     [[ -n "${MONGODB_CLUSTER_IP_SOURCE_WHITELIST}" ]] && STARTCMD="${STARTCMD} --clusterIpSourceWhitelist ${MONGODB_CLUSTER_IP_SOURCE_WHITELIST}"
     [[ -n "${MONGODB_PROFILE}" ]] && STARTCMD="${STARTCMD} --profile ${MONGODB_PROFILE}"
     [[ "${MONGODB_CPU}" == "true" || "${MONGODB_CPU}" == "1" ]] && STARTCMD="${STARTCMD} --cpu"
@@ -43,12 +44,17 @@ pushd ${MONGODB_DBPATH} >/dev/null
     [[ -n "${MONGODB_JOURNAL_COMMIT_INTERVAL}" ]] && STARTCMD="${STARTCMD} --journalCommitInterval ${MONGODB_JOURNAL_COMMIT_INTERVAL}"
     [[ "${MONGODB_NO_INDEX_BUILD_RETRY}" == "true" || "${MONGODB_NO_INDEX_BUILD_RETRY}" == "1" ]] && STARTCMD="${STARTCMD} --noIndexBuildRetry"
     [[ "${MONGODB_NOJOURNAL}" == "true" || "${MONGODB_NOJOURNAL}" == "1" ]] && STARTCMD="${STARTCMD} --nojournal"
+    [[ -n "${MONGODB_OPLOG_MIN_RETENTION_HOURS}" ]] && STARTCMD="${STARTCMD} --oplogMinRetentionHours ${MONGODB_OPLOG_MIN_RETENTION_HOURS}"
     [[ -n "${MONGODB_WIRED_TIGER_CACHE_SIZE}" ]] && STARTCMD="${STARTCMD} --wiredTigerCacheSizeGB ${MONGODB_WIRED_TIGER_CACHE_SIZE}"
+    [[ -n "${MONGODB_WIRED_TIGER_MAX_CACHE_OVERFLOW_FILESIZE}" ]] && STARTCMD="${STARTCMD} --wiredTigerMaxCacheOverflowFileSizeGB ${MONGODB_WIRED_TIGER_MAX_CACHE_OVERFLOW_FILESIZE}"
+    [[ -n "${MONGODB_ZSTD_DEFAULT_COMPRESSION_LEVEL}" ]] && STARTCMD="${STARTCMD} --zstdDefaultCompressionLevel ${MONGODB_ZSTD_DEFAULT_COMPRESSION_LEVEL}"
     [[ -n "${MONGODB_WIRED_TIGER_JOURNAL_COMPRESSOR}" ]] && STARTCMD="${STARTCMD} --wiredTigerJournalCompressor ${MONGODB_WIRED_TIGER_JOURNAL_COMPRESSOR}"
     [[ -n "${MONGODB_WIRED_TIGER_DIRECTORY_FOR_INDEXES}" ]] && STARTCMD="${STARTCMD} --wiredTigerDirectoryForIndexes ${MONGODB_WIRED_TIGER_DIRECTORY_FOR_INDEXES}"
-    [[ -n "${MONGODB_WIRED_TIGER_MAX_CACHE_OVERFLOW_FILESIZE}" ]] && STARTCMD="${STARTCMD} --wiredTigerMaxCacheOverflowFileSizeGB ${MONGODB_WIRED_TIGER_MAX_CACHE_OVERFLOW_FILESIZE}"
     [[ -n "${MONGODB_WIRED_TIGER_COLLECTION_BLOCK_COMPRESSOR}" ]] && STARTCMD="${STARTCMD} --wiredTigerCollectionBlockCompressor ${MONGODB_WIRED_TIGER_COLLECTION_BLOCK_COMPRESSOR}"
     [[ -n "${MONGODB_WIRED_TIGER_INDEX_PREFIX_COMPRESSION}" ]] && STARTCMD="${STARTCMD} --wiredTigerIndexPrefixCompression ${MONGODB_WIRED_TIGER_INDEX_PREFIX_COMPRESSION}"
+    [[ -n "${MONGODB_AWS_IAM_SESSION_TOKEN}" ]] && STARTCMD="${STARTCMD} --awsIamSessionToken ${MONGODB_AWS_IAM_SESSION_TOKEN}"
+    [[ -n "${MONGODB_ENABLE_FREE_MONITORING}" ]] && STARTCMD="${STARTCMD} --enableFreeMonitoring ${MONGODB_ENABLE_FREE_MONITORING}"
+    [[ -n "${MONGODB_FREE_MONITORING_TAG}" ]] && STARTCMD="${STARTCMD} --freeMonitoringTag ${MONGODB_FREE_MONITORING_TAG}"
     [[ "${MONGODB_SSL_ON_NORMAL_PORTS}" == "true" || "${MONGODB_SSL_ON_NORMAL_PORTS}" == "1" ]] && STARTCMD="${STARTCMD} --tlsOnNormalPorts"
     [[ -n "${MONGODB_SSL_MODE}" ]] && STARTCMD="${STARTCMD} --tlsMode ${MONGODB_SSL_MODE}"
     [[ -n "${MONGODB_SSL_CERTIFICATE_KEY_FILE}" ]] && STARTCMD="${STARTCMD} --tlsCertificateKeyFile ${MONGODB_SSL_CERTIFICATE_KEY_FILE}"
@@ -64,30 +70,34 @@ pushd ${MONGODB_DBPATH} >/dev/null
     [[ "${MONGODB_SSL_ALLOW_INVALID_CERTIFICATES}" == "true" || "${MONGODB_SSL_ALLOW_INVALID_CERTIFICATES}" == "1" ]] && STARTCMD="${STARTCMD} --tlsAllowInvalidCertificates"
     [[ "${MONGODB_SSL_FIPS_MODE}" == "true" || "${MONGODB_SSL_FIPS_MODE}" == "1" ]] && STARTCMD="${STARTCMD} --tlsFIPSMode"
     [[ -n "${MONGODB_SSL_LOG_VERSIONS}" ]] && STARTCMD="${STARTCMD} --tlsLogVersions ${MONGODB_SSL_LOG_VERSIONS}"
-    [[ -n "${MONGODB_ENABLE_FREE_MONITORING}" ]] && STARTCMD="${STARTCMD} --enableFreeMonitoring ${MONGODB_ENABLE_FREE_MONITORING}"
-    [[ -n "${MONGODB_FREE_MONITORING_TAG}" ]] && STARTCMD="${STARTCMD} --freeMonitoringTag ${MONGODB_FREE_MONITORING_TAG}"
-    [[ "${MONGODB_PERFORM_REPAIR}" == "true" || "${MONGODB_PERFORM_REPAIR}" == "1" ]] && ${STARTCMD} --repair
-    [[ "${MONGODB_PERFORM_UPGRADE}" == "true" || "${MONGODB_PERFORM_UPGRADE}" == "1" ]] && ${STARTCMD} --upgrade
+
+    if [[ "${MONGODB_PERFORM_REPAIR}" == "true" || "${MONGODB_PERFORM_REPAIR}" == "1" ]]; then
+        echo "> performing repair"
+        ${STARTCMD} --repair
+    fi
+
+    if [[ "${MONGODB_PERFORM_UPGRADE}" == "true" || "${MONGODB_PERFORM_UPGRADE}" == "1" ]]; then
+        echo "> performing upgrade"
+        ${STARTCMD} --upgrade
+    fi
 
     if [[ "${MONGODB_AUTH}" == "true" || "${MONGODB_AUTH}" == "1" ]]; then
         echo "> start local service"
-        ${STARTCMD} --fork --bind_ip 127.0.0.1
-        wait-for-it localhost:27017
+        ${STARTCMD} --fork --logpath ${MONGODB_LOGPATH:-/dev/stdout} --bind_ip 127.0.0.1
 
         if [[ -n "${MONGODB_ROOT_USERNAME}" && -n "${MONGODB_ROOT_PASSWORD}" ]]; then
-            if [[ "$(mongo --quiet --eval "print(db.system.users.find({user:'${MONGODB_ROOT_USERNAME}'}).count())" ${MONGODB_AUTH_DB})" == "0" ]]; then
+            if [[ "$(mongo --quiet --eval "print(db.system.users.find({user:'${MONGODB_ROOT_USERNAME}'}).count())" admin)" == "0" ]]; then
                 echo "> create root user"
-                mongo --quiet --eval "db.createUser({user: '${MONGODB_ROOT_USERNAME}', pwd: '${MONGODB_ROOT_PASSWORD}', roles: ['readWriteAnyDatabase','dbAdminAnyDatabase','userAdminAnyDatabase','clusterAdmin']})" ${MONGODB_AUTH_DB}
+                mongo --quiet --eval "db.createUser({user: '${MONGODB_ROOT_USERNAME}', pwd: '${MONGODB_ROOT_PASSWORD}', roles: ['readWriteAnyDatabase','dbAdminAnyDatabase','userAdminAnyDatabase','clusterAdmin']})" admin
             else
                 echo "> update root user"
-                mongo --quiet --eval "db.changeUserPassword('${MONGODB_ROOT_USERNAME}', '${MONGODB_ROOT_PASSWORD}')" ${MONGODB_AUTH_DB}
+                mongo --quiet --eval "db.changeUserPassword('${MONGODB_ROOT_USERNAME}', '${MONGODB_ROOT_PASSWORD}')" admin
             fi
         fi
 
         if [[ -n "${MONGODB_USERNAME}" && -n "${MONGODB_PASSWORD}" ]]; then
             MONGODB_DATABASE=${MONGODB_DATABASE:-$MONGODB_USERNAME}
-
-            if [[ "$(mongo --quiet --eval "print(db.system.users.find({user:'${MONGODB_USERNAME}'}).count())" ${MONGODB_AUTH_DB})" == "0" ]]; then
+            if [[ "$(mongo --quiet --eval "print(db.system.users.find({user:'${MONGODB_USERNAME}'}).count())" admin)" == "0" ]]; then
                 echo "> create additional user"
                 mongo --quiet --eval "db.createUser({user: '${MONGODB_USERNAME}', pwd: '${MONGODB_PASSWORD}', roles: [{role: 'readWrite', db: '${MONGODB_DATABASE}'}]})" ${MONGODB_AUTH_DB}
             else
@@ -100,9 +110,13 @@ pushd ${MONGODB_DBPATH} >/dev/null
         ${STARTCMD} --shutdown
     fi
 
+    [[ "${MONGODB_SYSLOG}" == "true" || "${MONGODB_SYSLOG}" == "1" ]] && STARTCMD="${STARTCMD} --syslog"
+    [[ -n "${MONGODB_LOGPATH}" ]] && STARTCMD="${STARTCMD} --logpath ${MONGODB_LOGPATH}"
+    [[ "${MONGODB_LOGAPPEND}" == "true" || "${MONGODB_LOGAPPEND}" == "1" ]] && STARTCMD="${STARTCMD} --logappend"
+    [[ -n "${MONGODB_LOGROTATE}" ]] && STARTCMD="${STARTCMD} --logRotate ${MONGODB_LOGROTATE}"
     [[ "${MONGODB_NOAUTH}" == "true" || "${MONGODB_NOAUTH}" == "1" ]] && STARTCMD="${STARTCMD} --noauth"
     [[ "${MONGODB_AUTH}" == "true" || "${MONGODB_AUTH}" == "1" ]] && STARTCMD="${STARTCMD} --auth"
 
     echo "> starting mongodb service"
-    exec ${STARTCMD} --bind_ip 0.0.0.0
+    exec ${STARTCMD} --bind_ip_all
 popd >/dev/null

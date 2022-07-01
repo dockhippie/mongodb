@@ -20,7 +20,7 @@ if [[ "${MONGODB_AUTH}" == "true" || "${MONGODB_AUTH}" == "1" ]]; then
     fi
 
     ARGS+=(
-        --authenticationDatabase ${MONGODB_AUTH_DB:-admin}
+        --authenticationDatabase admin
     )
 fi
 
