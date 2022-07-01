@@ -1,23 +1,26 @@
 # mongodb
 
-[![Docker Build](https://github.com/dockhippie/mongodb/workflows/docker/badge.svg)](https://github.com/dockhippie/mongodb/actions?query=workflow%3Adocker) [![Readme Build](https://github.com/dockhippie/mongodb/workflows/readme/badge.svg)](https://github.com/dockhippie/mongodb/actions?query=workflow%3Areadme) [![Docker Size](https://img.shields.io/docker/image-size/webhippie/mongodb/latest)](#) [![Docker Pulls](https://img.shields.io/docker/pulls/webhippie/mongodb)](https://hub.docker.com/r/webhippie/mongodb) [![GitHub Repo](https://img.shields.io/badge/github-repo-yellowgreen)](https://github.com/dockhippie/mongodb)
+[![Docker Build](https://github.com/dockhippie/mongodb/actions/workflows/docker.yml/badge.svg)](https://github.com/dockhippie/mongodb/actions/workflows/docker.yml) [![GitHub Repo](https://img.shields.io/badge/github-repo-yellowgreen)](https://github.com/dockhippie/mongodb)
 
-These are docker images for [MongoDB](https://www.mongodb.com) running on our [Ubuntu image](https://github.com/dockhippie/ubuntu).
+These are docker images for [MongoDB][upstream] running on our
+[Ubuntu image][parent].
 
 ## Versions
 
-For the available versions please look at [Docker Hub](https://hub.docker.com/r/webhippie/mongodb/tags) or [Quay](https://quay.io/repository/webhippie/mongodb?tab=tags) or check the existing folders within the [GitHub repository](https://github.com/dockhippie/mongodb).
+For the available versions please look at [Docker Hub][dockerhub] or
+[Quay][quayio] or check the existing folders within the
+[GitHub repository][github].
 
 ## Volumes
 
-* /var/lib/mongodb
-* /var/lib/backup
+*  /var/lib/mongodb
+*  /var/lib/backup
 
 ## Ports
 
-* 27017
-* 27018
-* 27019
+*  27017
+*  27018
+*  27019
 
 ## Available environment variables
 
@@ -129,3 +132,9 @@ MIT
 ```console
 Copyright (c) 2015 Thomas Boerger <http://www.webhippie.de>
 ```
+
+[upstream]: https://www.mongodb.com
+[parent]: https://github.com/dockhippie/ubuntu
+[dockerhub]: https://hub.docker.com/r/webhippie/mongodb/tags
+[quayio]: https://quay.io/repository/webhippie/mongodb?tab=tags
+[github]: https://github.com/dockhippie/mongodb
