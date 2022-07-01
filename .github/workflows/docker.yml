@@ -30,7 +30,7 @@ jobs:
             arm: false
           - folder: v4.0
             tag: 4.0
-            arm64: false
+            arm64: true
             arm: false
           - folder: latest
             tag: latest
