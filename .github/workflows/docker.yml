@@ -48,8 +48,8 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           images: |
-            webhippie/alpine
-            quay.io/webhippie/alpine
+            webhippie/mongodb
+            quay.io/webhippie/mongodb
           labels: |
             org.opencontainers.image.vendor=Webhippie
             maintainer=Thomas Boerger <thomas@webhippie.de>
@@ -90,8 +90,8 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           labels: ${{ steps.meta.outputs.labels }}
           tags: |
-            webhippie/alpine:${{ matrix.version.tag }}-amd64
-            quay.io/webhippie/alpine:${{ matrix.version.tag }}-amd64
+            webhippie/mongodb:${{ matrix.version.tag }}-amd64
+            quay.io/webhippie/mongodb:${{ matrix.version.tag }}-amd64
 
       - name: Build arm64
         id: arm64
@@ -105,8 +105,8 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           labels: ${{ steps.meta.outputs.labels }}
           tags: |
-            webhippie/alpine:${{ matrix.version.tag }}-arm64
-            quay.io/webhippie/alpine:${{ matrix.version.tag }}-arm64
+            webhippie/mongodb:${{ matrix.version.tag }}-arm64
+            quay.io/webhippie/mongodb:${{ matrix.version.tag }}-arm64
 
       - name: Build arm
         id: arm
@@ -120,8 +120,8 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           labels: ${{ steps.meta.outputs.labels }}
           tags: |
-            webhippie/alpine:${{ matrix.version.tag }}-arm
-            quay.io/webhippie/alpine:${{ matrix.version.tag }}-arm
+            webhippie/mongodb:${{ matrix.version.tag }}-arm
+            quay.io/webhippie/mongodb:${{ matrix.version.tag }}-arm
 
       - name: Hub manifest
         id: manifest1
@@ -131,8 +131,8 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
           platforms: linux/amd64,linux/arm64,linux/arm/v7
-          template: webhippie/alpine:${{ matrix.version.tag }}-ARCH
-          target: webhippie/alpine:${{ matrix.version.tag }}
+          template: webhippie/mongodb:${{ matrix.version.tag }}-ARCH
+          target: webhippie/mongodb:${{ matrix.version.tag }}
           ignore_missing: true
 
       - name: Quay manifest
@@ -143,8 +143,8 @@ jobs:
           username: ${{ secrets.QUAY_USERNAME }}
           password: ${{ secrets.QUAY_PASSWORD }}
           platforms: linux/amd64,linux/arm64,linux/arm/v7
-          template: quay.io/webhippie/alpine:${{ matrix.version.tag }}-ARCH
-          target: quay.io/webhippie/alpine:${{ matrix.version.tag }}
+          template: quay.io/webhippie/mongodb:${{ matrix.version.tag }}-ARCH
+          target: quay.io/webhippie/mongodb:${{ matrix.version.tag }}
           ignore_missing: true
 
 ...
