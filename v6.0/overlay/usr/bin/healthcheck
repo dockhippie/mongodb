@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+set -eo pipefail
+source /usr/bin/entrypoint
+
+ARGS=(
+    --quiet
+)
+
+if [[ "${MONGODB_AUTH}" == "true" || "${MONGODB_AUTH}" == "1" ]]; then
+    if [[ -n "${MONGODB_ROOT_USERNAME}" ]]; then
+        ARGS+=(
+          --username ${MONGODB_ROOT_USERNAME}
+        )
+    fi
+
+    if [[ -n "${MONGODB_ROOT_PASSWORD}" ]]; then
+        ARGS+=(
+          --password ${MONGODB_ROOT_PASSWORD}
+        )
+    fi
+
+    ARGS+=(
+        --authenticationDatabase admin
+    )
+fi
+
+CHECK="$(mongo ${ARGS[@]} --eval 'print(db.runCommand({ ping: 1 }).ok ? 0 : 1)' 2>/dev/null)"
+
+if [[ "${CHECK}" == "0" ]]; then
+    exit 0
+fi
+
+exit 1
