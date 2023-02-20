@@ -14,5 +14,16 @@
             "automerge": true
         }
     },
-    "packageRules": []
+    "packageRules": [
+        {
+            "datasources": [
+                "docker"
+            ],
+            "updateTypes": [
+                "major",
+                "minor"
+            ],
+            "enabled": false
+        }
+    ]
 }
