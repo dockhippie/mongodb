@@ -15,7 +15,7 @@ RUN apt-get update && \
   mkdir -p /var/lib/mongodb && \
   groupadd -g 1000 mongodb && \
   useradd -u 1000 -d /var/lib/mongodb -g mongodb -s /bin/bash -m mongodb && \
-  apt-get install -y mongodb-org jq && \
+  apt-get install -y --allow-unauthenticated mongodb-org jq && \
   apt-get purge -y lsb-release gnupg2 && \
   apt-get autoremove -y && \
   apt-get clean -y && \
