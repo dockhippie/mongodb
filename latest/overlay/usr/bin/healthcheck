@@ -24,7 +24,7 @@ if [[ "${MONGODB_AUTH}" == "true" || "${MONGODB_AUTH}" == "1" ]]; then
     )
 fi
 
-CHECK="$(mongo ${ARGS[@]} --eval 'print(db.runCommand({ ping: 1 }).ok ? 0 : 1)' 2>/dev/null)"
+CHECK="$(mongosh ${ARGS[@]} --eval 'print(db.runCommand({ ping: 1 }).ok ? 0 : 1)' 2>/dev/null)"
 
 if [[ "${CHECK}" == "0" ]]; then
     exit 0
