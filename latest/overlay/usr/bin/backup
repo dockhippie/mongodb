@@ -2,9 +2,7 @@
 set -eo pipefail
 source /usr/bin/entrypoint
 
-ARGS=(
-    --quiet
-)
+ARGS=()
 
 if [[ "${MONGODB_AUTH}" == "true" || "${MONGODB_AUTH}" == "1" ]]; then
     if [[ -n "${MONGODB_ROOT_USERNAME}" ]]; then
@@ -24,7 +22,7 @@ if [[ "${MONGODB_AUTH}" == "true" || "${MONGODB_AUTH}" == "1" ]]; then
     )
 fi
 
-DATABASES=$(mongo ${ARGS[@]} --eval 'JSON.stringify(db.adminCommand( { listDatabases: 1, nameOnly: true } ))' | jq -r .databases[].name | grep -v -E "${MONGODB_BACKUP_IGNORE}")
+DATABASES=$(mongosh --quiet ${ARGS[@]} --eval 'JSON.stringify(db.adminCommand( { listDatabases: 1, nameOnly: true } ))' | jq -r .databases[].name | grep -v -E "${MONGODB_BACKUP_IGNORE}")
 MAXIMUM=${MONGODB_BACKUP_RETENTION}
 
 if [ "${DATABASES}" == "" ]; then

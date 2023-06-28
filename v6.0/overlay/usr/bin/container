@@ -86,23 +86,23 @@ pushd ${MONGODB_DBPATH} >/dev/null
         ${STARTCMD} --fork --logpath ${MONGODB_LOGPATH:-/dev/stdout} --bind_ip 127.0.0.1
 
         if [[ -n "${MONGODB_ROOT_USERNAME}" && -n "${MONGODB_ROOT_PASSWORD}" ]]; then
-            if [[ "$(mongo --quiet --eval "print(db.system.users.find({user:'${MONGODB_ROOT_USERNAME}'}).count())" admin)" == "0" ]]; then
+            if [[ "$(mongosh --quiet --eval "print(db.system.users.find({user:'${MONGODB_ROOT_USERNAME}'}).count())" admin)" == "0" ]]; then
                 echo "> create root user"
-                mongo --quiet --eval "db.createUser({user: '${MONGODB_ROOT_USERNAME}', pwd: '${MONGODB_ROOT_PASSWORD}', roles: ['readWriteAnyDatabase','dbAdminAnyDatabase','userAdminAnyDatabase','clusterAdmin']})" admin
+                mongosh --quiet --eval "db.createUser({user: '${MONGODB_ROOT_USERNAME}', pwd: '${MONGODB_ROOT_PASSWORD}', roles: ['readWriteAnyDatabase','dbAdminAnyDatabase','userAdminAnyDatabase','clusterAdmin']})" admin
             else
                 echo "> update root user"
-                mongo --quiet --eval "db.changeUserPassword('${MONGODB_ROOT_USERNAME}', '${MONGODB_ROOT_PASSWORD}')" admin
+                mongosh --quiet --eval "db.changeUserPassword('${MONGODB_ROOT_USERNAME}', '${MONGODB_ROOT_PASSWORD}')" admin
             fi
         fi
 
         if [[ -n "${MONGODB_USERNAME}" && -n "${MONGODB_PASSWORD}" ]]; then
             MONGODB_DATABASE=${MONGODB_DATABASE:-$MONGODB_USERNAME}
-            if [[ "$(mongo --quiet --eval "print(db.system.users.find({user:'${MONGODB_USERNAME}'}).count())" admin)" == "0" ]]; then
+            if [[ "$(mongosh --quiet --eval "print(db.system.users.find({user:'${MONGODB_USERNAME}'}).count())" admin)" == "0" ]]; then
                 echo "> create additional user"
-                mongo --quiet --eval "db.createUser({user: '${MONGODB_USERNAME}', pwd: '${MONGODB_PASSWORD}', roles: [{role: 'readWrite', db: '${MONGODB_DATABASE}'}]})" ${MONGODB_AUTH_DB}
+                mongosh --quiet --eval "db.createUser({user: '${MONGODB_USERNAME}', pwd: '${MONGODB_PASSWORD}', roles: [{role: 'readWrite', db: '${MONGODB_DATABASE}'}]})" ${MONGODB_AUTH_DB}
             else
                 echo "> update additional user"
-                mongo --quiet --eval "db.changeUserPassword('${MONGODB_USERNAME}', '${MONGODB_PASSWORD}')" ${MONGODB_AUTH_DB}
+                mongosh --quiet --eval "db.changeUserPassword('${MONGODB_USERNAME}', '${MONGODB_PASSWORD}')" ${MONGODB_AUTH_DB}
             fi
         fi
 
