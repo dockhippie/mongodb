@@ -1,4 +1,4 @@
-FROM ghcr.io/dockhippie/ubuntu:18.04-amd64@sha256:8257e108631a822376413a6b5099c2c636d727156c2fd151b601477c295c2260
+FROM ghcr.io/dockhippie/ubuntu:18.04-amd64@sha256:973ddb2d9afc716790af76a65ba1b5c87e45d176eb8a7a21861362f99c19a883
 
 VOLUME ["/var/lib/mongodb", "/var/lib/backup"]
 EXPOSE 27017 27018 27019
