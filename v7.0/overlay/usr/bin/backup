@@ -1,0 +1,67 @@
+#!/usr/bin/env bash
+set -eo pipefail
+source /usr/bin/entrypoint
+
+ARGS=()
+
+if [[ "${MONGODB_AUTH}" == "true" || "${MONGODB_AUTH}" == "1" ]]; then
+    if [[ -n "${MONGODB_ROOT_USERNAME}" ]]; then
+        ARGS+=(
+            --username ${MONGODB_ROOT_USERNAME}
+        )
+    fi
+
+    if [[ -n "${MONGODB_ROOT_PASSWORD}" ]]; then
+        ARGS+=(
+            --password ${MONGODB_ROOT_PASSWORD}
+        )
+    fi
+
+    ARGS+=(
+        --authenticationDatabase admin
+    )
+fi
+
+DATABASES=$(mongosh --quiet ${ARGS[@]} --eval 'JSON.stringify(db.adminCommand( { listDatabases: 1, nameOnly: true } ))' | jq -r .databases[].name | grep -v -E "${MONGODB_BACKUP_IGNORE}")
+MAXIMUM=${MONGODB_BACKUP_RETENTION}
+
+if [ "${DATABASES}" == "" ]; then
+    exit
+fi
+
+if [ ! -d ${MONGODB_BACKUP_PATH} ]; then
+    mkdir -p ${MONGODB_BACKUP_PATH}
+    chmod 740 ${MONGODB_BACKUP_PATH}
+fi
+
+for DATABASE in ${DATABASES}; do
+    if [ -d /tmp/${DATABASE} ]; then
+        rm -rf /tmp/${DATABASE}
+    fi
+
+    mongodump ${ARGS[@]} --db=${DATABASE} --out /tmp
+done
+
+for (( COUNTER=$MAXIMUM; COUNTER>=1; COUNTER-- )); do
+    if [ -d ${MONGODB_BACKUP_PATH}/backup.${COUNTER} ]; then
+        DEST=`expr $COUNTER + 1`
+
+        if [ $DEST -le $MAXIMUM ]; then
+            rm -rf ${MONGODB_BACKUP_PATH}/backup.${DEST}
+            mv ${MONGODB_BACKUP_PATH}/backup.${COUNTER} ${MONGODB_BACKUP_PATH}/backup.${DEST}
+        fi
+    fi
+done
+
+mkdir -p ${MONGODB_BACKUP_PATH}/backup.1
+chmod 740 ${MONGODB_BACKUP_PATH}/backup.1
+
+cd ${MONGODB_BACKUP_PATH}/backup.1
+
+for DATABASE in ${DATABASES}; do
+    if [ -d /tmp/${DATABASE} ]; then
+        tar czf ${DATABASE}.tgz -C /tmp/ ${DATABASE}
+        chmod 640 ${DATABASE}.tgz
+        rm -rf /tmp/${DATABASE}
+    fi
+done
