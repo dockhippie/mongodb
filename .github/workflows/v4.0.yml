@@ -95,6 +95,8 @@ jobs:
           platforms: ${{ matrix.variant.platform }}
           push: ${{ github.event_name != 'pull_request' }}
           labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           tags: |
             webhippie/mongodb:4.0-${{ matrix.variant.arch }}
             quay.io/webhippie/mongodb:4.0-${{ matrix.variant.arch }}
