@@ -22,3 +22,7 @@ RUN apt-get update && \
   rm -rf /var/lib/apt/lists/* /var/lib/mongodb/*
 
 COPY ./overlay /
+
+RUN find /etc/container.d /etc/entrypoint.d -type f -name \*.sh -exec sed -i 's/\r$//' {} +; \
+  sed -i 's/\r$//' /usr/bin/backup /usr/bin/healthcheck /usr/bin/container && \
+  chmod +x /usr/bin/backup /usr/bin/healthcheck /usr/bin/container /etc/container.d/*.sh /etc/entrypoint.d/*.sh
