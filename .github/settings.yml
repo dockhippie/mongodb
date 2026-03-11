@@ -1,7 +1,7 @@
 ---
 repository:
   name: mongodb
-  description: Docker images for mongodb
+  description: Docker images for MongoDB
   topics: docker, image
 
   private: false
