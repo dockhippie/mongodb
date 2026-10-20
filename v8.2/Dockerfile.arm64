@@ -12,6 +12,8 @@ RUN apt-get update && \
   echo "deb [arch=arm64] https://repo.mongodb.org/apt/ubuntu $(lsb_release -cs)/mongodb-org/8.2 multiverse" | tee /etc/apt/sources.list.d/mongodb.list && \
   apt-get update && \
   apt-get upgrade -y && \
+  userdel ubuntu && \
+  rm -rf /home/ubuntu && \
   mkdir -p /var/lib/mongodb && \
   groupadd -g 1000 mongodb && \
   useradd -u 1000 -d /var/lib/mongodb -g mongodb -s /bin/bash -m mongodb && \
