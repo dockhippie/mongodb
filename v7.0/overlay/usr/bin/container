@@ -24,7 +24,7 @@ pushd ${MONGODB_DBPATH} >/dev/null
     [[ -n "${MONGODB_SLOWMS}" ]] && STARTCMD="${STARTCMD} --slowms ${MONGODB_SLOWMS}"
     [[ -n "${MONGODB_SLOW_OP_SAMPLE_RATE}" ]] && STARTCMD="${STARTCMD} --slowOpSampleRate ${MONGODB_SLOW_OP_SAMPLE_RATE}"
     [[ -n "${MONGODB_PROFILE_FILTER}" ]] && STARTCMD="${STARTCMD} --profileFilter ${MONGODB_PROFILE_FILTER}"
-    [[ -n "${MONGODB_CLUSTER_IP_SOURCE_WHITELIST}" ]] && STARTCMD="${STARTCMD} --clusterIpSourceWhitelist ${MONGODB_CLUSTER_IP_SOURCE_WHITELIST}"
+    [[ -n "${MONGODB_CLUSTER_IP_SOURCE_ALLOWLIST}" ]] && STARTCMD="${STARTCMD} --clusterIpSourceAllowlist ${MONGODB_CLUSTER_IP_SOURCE_ALLOWLIST}"
     [[ -n "${MONGODB_PROFILE}" ]] && STARTCMD="${STARTCMD} --profile ${MONGODB_PROFILE}"
     [[ "${MONGODB_CPU}" == "true" || "${MONGODB_CPU}" == "1" ]] && STARTCMD="${STARTCMD} --cpu"
     [[ "${MONGODB_SYSINFO}" == "true" || "${MONGODB_SYSINFO}" == "1" ]] && STARTCMD="${STARTCMD} --sysinfo"
@@ -42,8 +42,6 @@ pushd ${MONGODB_DBPATH} >/dev/null
     [[ "${MONGODB_DIRECTORYPERDB}" == "true" || "${MONGODB_DIRECTORYPERDB}" == "1" ]] && STARTCMD="${STARTCMD} --directoryperdb"
     [[ -n "${MONGODB_SYNCDELAY}" ]] && STARTCMD="${STARTCMD} --syncdelay ${MONGODB_SYNCDELAY}"
     [[ -n "${MONGODB_JOURNAL_COMMIT_INTERVAL}" ]] && STARTCMD="${STARTCMD} --journalCommitInterval ${MONGODB_JOURNAL_COMMIT_INTERVAL}"
-    [[ "${MONGODB_NO_INDEX_BUILD_RETRY}" == "true" || "${MONGODB_NO_INDEX_BUILD_RETRY}" == "1" ]] && STARTCMD="${STARTCMD} --noIndexBuildRetry"
-    [[ "${MONGODB_NOJOURNAL}" == "true" || "${MONGODB_NOJOURNAL}" == "1" ]] && STARTCMD="${STARTCMD} --nojournal"
     [[ -n "${MONGODB_OPLOG_MIN_RETENTION_HOURS}" ]] && STARTCMD="${STARTCMD} --oplogMinRetentionHours ${MONGODB_OPLOG_MIN_RETENTION_HOURS}"
     [[ -n "${MONGODB_WIRED_TIGER_CACHE_SIZE}" ]] && STARTCMD="${STARTCMD} --wiredTigerCacheSizeGB ${MONGODB_WIRED_TIGER_CACHE_SIZE}"
     [[ -n "${MONGODB_WIRED_TIGER_MAX_CACHE_OVERFLOW_FILESIZE}" ]] && STARTCMD="${STARTCMD} --wiredTigerMaxCacheOverflowFileSizeGB ${MONGODB_WIRED_TIGER_MAX_CACHE_OVERFLOW_FILESIZE}"
@@ -66,7 +64,6 @@ pushd ${MONGODB_DBPATH} >/dev/null
     [[ "${MONGODB_SSL_ALLOW_CONNECTIONS_WITHOUT_CERTIFICATES}" == "true" || "${MONGODB_SSL_ALLOW_CONNECTIONS_WITHOUT_CERTIFICATES}" == "1" ]] && STARTCMD="${STARTCMD} --tlsAllowConnectionsWithoutCertificates"
     [[ "${MONGODB_SSL_ALLOW_INVALID_HOSTNAMES}" == "true" || "${MONGODB_SSL_ALLOW_INVALID_HOSTNAMES}" == "1" ]] && STARTCMD="${STARTCMD} --tlsAllowInvalidHostnames"
     [[ "${MONGODB_SSL_ALLOW_INVALID_CERTIFICATES}" == "true" || "${MONGODB_SSL_ALLOW_INVALID_CERTIFICATES}" == "1" ]] && STARTCMD="${STARTCMD} --tlsAllowInvalidCertificates"
-    [[ "${MONGODB_SSL_FIPS_MODE}" == "true" || "${MONGODB_SSL_FIPS_MODE}" == "1" ]] && STARTCMD="${STARTCMD} --tlsFIPSMode"
     [[ -n "${MONGODB_SSL_LOG_VERSIONS}" ]] && STARTCMD="${STARTCMD} --tlsLogVersions ${MONGODB_SSL_LOG_VERSIONS}"
 
     if [[ "${MONGODB_PERFORM_REPAIR}" == "true" || "${MONGODB_PERFORM_REPAIR}" == "1" ]]; then
