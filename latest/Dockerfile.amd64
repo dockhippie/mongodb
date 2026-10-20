@@ -1,4 +1,4 @@
-FROM ghcr.io/dockhippie/ubuntu:22.04-amd64@sha256:3d2a2b42df431a60687ea1e70a753af36570cc8d21d62b9cc72e42effb36ac32
+FROM ghcr.io/dockhippie/ubuntu:26.04-amd64
 
 VOLUME ["/var/lib/mongodb", "/var/lib/backup"]
 EXPOSE 27017 27018 27019
@@ -8,8 +8,8 @@ CMD ["/usr/bin/container"]
 
 RUN apt-get update && \
   apt-get install -y lsb-release gnupg2 && \
-  curl -sSLo- https://www.mongodb.org/static/pgp/server-7.0.asc | apt-key add - && \
-  echo "deb [arch=amd64] https://repo.mongodb.org/apt/ubuntu $(lsb_release -cs)/mongodb-org/7.0 multiverse" | tee /etc/apt/sources.list.d/mongodb.list && \
+  curl -sSL https://pgp.mongodb.com/server-9.asc | gpg --dearmor -o /usr/share/keyrings/mongodb-server-9.0.gpg && \
+  echo "deb [arch=amd64 signed-by=/usr/share/keyrings/mongodb-server-9.0.gpg] https://repo.mongodb.org/apt/ubuntu $(lsb_release -cs)/mongodb-org/9.0 multiverse" | tee /etc/apt/sources.list.d/mongodb.list && \
   apt-get update && \
   apt-get upgrade -y && \
   mkdir -p /var/lib/mongodb && \
